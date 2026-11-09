@@ -6,10 +6,11 @@
   --font-mono: "GT Pressura Mono", "Courier New", Courier, monospace;
 
   --dash: 1px dashed var(--border-color);
-  --margin: clamp(16px, 2vw, 48px);     /* margen lateral de toda la página */
-  --gutter: clamp(16px, 1.5vw, 36px);   /* hueco entre columnas */
-  --inset: 0.6em;                       /* sangría del texto respecto a las líneas */
-  --fs: clamp(13px, 0.82vw, 18px);      /* cuerpo de texto, escala con la pantalla */
+  --margin: clamp(16px, 2vw, 48px);
+  --gutter: clamp(16px, 1.5vw, 36px);
+  --inset: 0.6em;
+  --fs: 13px;
+  --fs-title: 14px;
 }
 
 @font-face {
@@ -18,6 +19,18 @@
        url('fonts/GT-Pressura-Mono-Regular.otf') format('opentype');
   font-weight: 400;
   font-display: swap;
+}
+
+html {
+  scrollbar-color: var(--text-color) var(--bg-color);
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-color); }
+::-webkit-scrollbar-thumb {
+  background: var(--text-color);
+  border-radius: 4px;
 }
 
 * {
@@ -33,7 +46,6 @@ html, body {
   font-family: var(--font-mono);
   font-size: var(--fs);
   line-height: 1.5;
-  letter-spacing: 0.02em;
 }
 
 body {
@@ -43,7 +55,6 @@ body {
 .border-dashed-bottom { border-bottom: var(--dash); }
 .border-dashed-top    { border-top: var(--dash); }
 
-/* ---------- CABECERA: 3 elementos entre dos líneas ---------- */
 .site-header {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -52,36 +63,30 @@ body {
   padding: 0.7em var(--inset);
   border-top: var(--dash);
   border-bottom: var(--dash);
-  position: sticky;
-  top: 0;
-  background: var(--bg-color);
-  z-index: 20;
   margin-top: 1.2em;
 }
 
 .nav-title {
+  font-size: var(--fs-title);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
 }
 
 .nav-subtitle { text-align: center; }
 .site-header > :last-child { text-align: right; }
 
-/* ---------- LOGO ---------- */
 .hero-header {
   text-align: center;
   padding: 1.5em 0 1.5em;
 }
 
 .hero-logo-img {
-  width: min(33vw, 760px);
+  width: min(20vw, 460px);
   height: auto;
   max-width: 100%;
   display: block;
   margin: 0 auto;
 }
 
-/* ---------- COLUMNAS ---------- */
 main {
   display: flex;
   flex-direction: column;
@@ -90,16 +95,14 @@ main {
 
 .column {
   position: relative;
-  border-bottom: var(--dash);   /* línea que cierra cada columna */
+  border-bottom: var(--dash);
   padding-bottom: 0.2em;
 }
 
-/* Título entre dos líneas discontinuas */
 .column h2 {
-  font-size: inherit;
+  font-size: var(--fs-title);
   font-weight: normal;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
   border-top: var(--dash);
   border-bottom: var(--dash);
   padding: 0.6em var(--inset);
@@ -113,26 +116,22 @@ main {
 
 .column > p:last-child { margin-bottom: 0.5em; }
 
-/* ---------- SESIONES ---------- */
 .session-item {
   padding: 0.6em var(--inset) 0.9em;
   border-bottom: var(--dash);
 }
 
-/* la última no lleva línea: ya la pone la columna */
 .session-item:last-child { border-bottom: none; }
 
 .session-item h3 {
-  font-size: inherit;
+  font-size: var(--fs-title);
   font-weight: normal;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
   margin-bottom: 0.2em;
 }
 
 .dates { list-style: none; }
 
-/* número | fecha  — y el [Con …] alineado con la fecha (sangría francesa) */
 .dates li {
   display: grid;
   grid-template-columns: 1.7em 1fr;
@@ -141,7 +140,6 @@ main {
 
 .dates .guest { grid-column: 2; }
 
-/* Números en círculo relleno (➊ ➋) */
 .num {
   display: inline-flex;
   align-items: center;
@@ -153,17 +151,14 @@ main {
   color: var(--bg-color);
   font-size: 0.8em;
   line-height: 1;
-  letter-spacing: 0;
   vertical-align: 0.05em;
 }
 
 .open-call {
   text-align: center;
   margin: 1.4em 0 1.2em;
-  letter-spacing: 0.04em;
 }
 
-/* ---------- FORMULARIO ---------- */
 .form-section {
   padding: 2.5em 0 2em;
 }
@@ -198,25 +193,31 @@ main {
   padding: 0.9em;
   cursor: pointer;
   font: inherit;
-  letter-spacing: 0.04em;
   text-transform: uppercase;
   transition: opacity 0.2s ease;
 }
 
 .subscribe-form button:hover { opacity: 0.9; }
+.subscribe-form button:disabled { opacity: 0.6; cursor: wait; }
 
-/* ---------- FOOTER ---------- */
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+
+.form-msg { text-align: center; min-height: 1.5em; }
+
 footer {
   opacity: 0;
+  visibility: hidden;
   transform: translateY(20px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0s linear 0.4s;
   padding: 30px 0;
   text-align: center;
 }
 
 footer.visible {
   opacity: 1;
+  visibility: visible;
   transform: translateY(0);
+  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0s;
 }
 
 .logos-grid {
@@ -228,24 +229,16 @@ footer.visible {
   align-items: center;
 }
 
-/* ---------- PREVIEW QUE SIGUE AL RATÓN (azucarero) ---------- */
 .cursor-preview {
   position: fixed;
   pointer-events: none;
   width: clamp(200px, 15vw, 340px);
-  aspect-ratio: 750 / 650;
   height: auto;
-  object-fit: contain;
   display: none;
   z-index: 100;
-  transform: translate(-50%, -50%);
   transition: opacity 0.2s ease;
-  background: var(--bg-color);
-  border: 1px solid var(--border-color);
-  border-radius: 14px;
 }
 
-/* ---------- MÓVIL: el subtítulo baja a otra fila ---------- */
 @media (max-width: 899px) {
   .site-header {
     grid-template-columns: 1fr 1fr;
@@ -259,12 +252,42 @@ footer.visible {
   .hero-logo-img { width: 80vw; }
 }
 
-/* ---------- ESCRITORIO: 4 columnas ---------- */
 @media (min-width: 900px) {
+  .screen {
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-header { padding: 1.2em 0; flex-shrink: 0; }
+
   main {
+    flex: 1;
+    min-height: 0;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: var(--gutter);
-    align-items: start;
+    align-items: stretch;
+  }
+
+  .column {
+    overflow-y: auto;
+    min-height: 0;
+    scrollbar-width: none;
+  }
+
+  .column::-webkit-scrollbar { display: none; }
+
+  .column h2 {
+    position: sticky;
+    top: 0;
+    background: var(--bg-color);
+    z-index: 1;
+  }
+
+  .form-section {
+    flex-shrink: 0;
+    padding: 1.2em 0 1em;
   }
 }

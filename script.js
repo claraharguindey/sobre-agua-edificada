@@ -1,28 +1,21 @@
+// Pega aquí la URL que te da Google Apps Script al implementar (termina en /exec)
+const SHEET_URL = "https://script.google.com/macros/s/XXXXXXXXXXXX/exec";
+
 document.addEventListener("DOMContentLoaded", () => {
   const mousePreview = document.getElementById("mouse-preview");
   const columns = document.querySelectorAll(".column");
   const footer = document.querySelector("footer");
   const form = document.getElementById("inscription-form");
+  const msg = document.getElementById("form-msg");
 
+  /* ---------- FOOTER: aparece solo al hacer scroll ---------- */
   const checkScroll = () => {
-    let scrolled = window.scrollY > 5;
-    columns.forEach(col => {
-      if (col.scrollTop > 5) scrolled = true;
-    });
-
-    if (scrolled) {
-      footer.classList.add("visible");
-    } else {
-      footer.classList.remove("visible");
-    }
+    footer.classList.toggle("visible", window.scrollY > 40);
   };
-
-  // Comprueba la visibilidad al cargar la página por si hay contenido amplio
+  window.addEventListener("scroll", checkScroll, { passive: true });
   checkScroll();
 
-  window.addEventListener("scroll", checkScroll, { passive: true });
-  columns.forEach(col => col.addEventListener("scroll", checkScroll, { passive: true }));
-
+  /* ---------- PREVIEW QUE SIGUE AL RATÓN ---------- */
   columns.forEach(col => {
     col.addEventListener("mouseenter", () => {
       const img = col.getAttribute("data-image");
@@ -42,22 +35,28 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  /* ---------- FORMULARIO → GOOGLE SHEETS ---------- */
   if (form) {
-    form.addEventListener("submit", (e) => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const nombre = document.getElementById("nombre").value;
-      const email = document.getElementById("email").value;
+      const button = form.querySelector("button");
+      const data = new URLSearchParams(new FormData(form));
 
-      const data = [
-        { Nombre: nombre, Email: email, Fecha: new Date().toLocaleString() }
-      ];
+      button.disabled = true;
+      button.textContent = "ENVIANDO…";
+      msg.textContent = "";
 
-      const worksheet = XLSX.utils.json_to_sheet(data);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Inscripciones");
-
-      XLSX.writeFile(workbook, "inscritos_agua_edificada.xlsx");
-      form.reset();
+      try {
+        // no-cors: Google no deja leer la respuesta, pero los datos llegan
+        await fetch(SHEET_URL, { method: "POST", mode: "no-cors", body: data });
+        form.reset();
+        msg.textContent = "¡Gracias! Hemos recibido tu inscripción.";
+      } catch (err) {
+        msg.textContent = "No se ha podido enviar. Inténtalo de nuevo.";
+      } finally {
+        button.disabled = false;
+        button.textContent = "INSCRIBIRME";
+      }
     });
   }
 });
