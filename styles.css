@@ -390,7 +390,7 @@ footer.visible {
     text-align: center;
     font-size: var(--fs-title);
     border-top: var(--dash);
-    padding: 1.4em 0 0;
+    padding: 1.4em 0;
   }
 
   body {
