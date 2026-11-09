@@ -1,4 +1,4 @@
-const SHEET_URL = "https://script.google.com/macros/s/XXXXXXXXXXXX/exec";
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbx0H1TT-lFXjZHwOqVXGjoEnhf3IWYY6TvUP1A-FR_UFq_cE5FUO4JqUH3KR_Mpte5r/exec";
 
 document.addEventListener("DOMContentLoaded", () => {
   const mousePreview = document.getElementById("mouse-preview");
@@ -62,11 +62,17 @@ document.addEventListener("DOMContentLoaded", () => {
       msg.textContent = "";
 
       try {
-        await fetch(SHEET_URL, { method: "POST", mode: "no-cors", body: data });
-        form.reset();
-        msg.textContent = "¡Gracias! Hemos recibido tu inscripción.";
+        const res = await fetch(SHEET_URL, { method: "POST", body: data });
+        const json = await res.json().catch(() => ({}));
+
+        if (json.ok) {
+          form.reset();
+          msg.textContent = "¡Gracias! Hemos recibido tu inscripción.";
+        } else {
+          msg.textContent = json.error || "No se ha podido enviar. Inténtalo de nuevo.";
+        }
       } catch (err) {
-        msg.textContent = "No se ha podido enviar. Inténtalo de nuevo.";
+        msg.textContent = "No se ha podido enviar. Revisa tu conexión.";
       } finally {
         button.disabled = false;
         button.textContent = "INSCRIBIRME";
