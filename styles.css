@@ -407,13 +407,9 @@ footer.visible {
     order: 3;
   }
 
-  .column {
-    margin-top: 3em;
-  }
-
   .mobile-image {
     display: block;
-    padding: 5em 0 2em;
+    padding: 2em;
   }
 
   .mobile-image img {
