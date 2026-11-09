@@ -1,4 +1,3 @@
-// Pega aquí la URL que te da Google Apps Script al implementar (termina en /exec)
 const SHEET_URL = "https://script.google.com/macros/s/XXXXXXXXXXXX/exec";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -8,14 +7,31 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("inscription-form");
   const msg = document.getElementById("form-msg");
 
-  /* ---------- FOOTER: aparece solo al hacer scroll ---------- */
+  const menu = document.getElementById("menu");
+  const menuOpen = document.getElementById("menu-open");
+  const menuClose = document.getElementById("menu-close");
+
+  const setMenu = (open) => {
+    menu.classList.toggle("open", open);
+    menuOpen.setAttribute("aria-expanded", open);
+    document.body.style.overflow = open ? "hidden" : "";
+  };
+
+  document.getElementById("to-top").addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  menuOpen.addEventListener("click", () => setMenu(true));
+  menuClose.addEventListener("click", () => setMenu(false));
+  menu.querySelectorAll("a").forEach(a => a.addEventListener("click", () => setMenu(false)));
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") setMenu(false); });
+
   const checkScroll = () => {
     footer.classList.toggle("visible", window.scrollY > 40);
   };
   window.addEventListener("scroll", checkScroll, { passive: true });
   checkScroll();
 
-  /* ---------- PREVIEW QUE SIGUE AL RATÓN ---------- */
   columns.forEach(col => {
     col.addEventListener("mouseenter", () => {
       const img = col.getAttribute("data-image");
@@ -35,7 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  /* ---------- FORMULARIO → GOOGLE SHEETS ---------- */
   if (form) {
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -47,7 +62,6 @@ document.addEventListener("DOMContentLoaded", () => {
       msg.textContent = "";
 
       try {
-        // no-cors: Google no deja leer la respuesta, pero los datos llegan
         await fetch(SHEET_URL, { method: "POST", mode: "no-cors", body: data });
         form.reset();
         msg.textContent = "¡Gracias! Hemos recibido tu inscripción.";
