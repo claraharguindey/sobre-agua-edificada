@@ -52,6 +52,21 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   if (form) {
+    const legal = document.getElementById("form-legal");
+    const nombre = document.getElementById("nombre");
+    const email = document.getElementById("email");
+
+    // Se muestra en cuanto hay algo escrito en cualquiera de los dos campos
+    const updateLegal = () => {
+      if (!legal) return;
+      const hasText = nombre.value.trim() !== "" || email.value.trim() !== "";
+      legal.hidden = !hasText;
+    };
+
+    nombre.addEventListener("input", updateLegal);
+    email.addEventListener("input", updateLegal);
+    updateLegal();
+
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const button = form.querySelector("button");
@@ -67,6 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (json.ok) {
           form.reset();
+          updateLegal(); // campos vacíos: se oculta y la casilla queda desmarcada
           msg.textContent = "¡Gracias! Hemos recibido tu inscripción.";
         } else {
           msg.textContent = json.error || "No se ha podido enviar. Inténtalo de nuevo.";

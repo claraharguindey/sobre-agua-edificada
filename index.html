@@ -115,7 +115,8 @@
           <h3>PALACIO DE EL CAPRICHO</h3>
           <ol class="dates">
             <li><span class="num">1</span><span>10.03.2027</span>
-            <span class="guest">[Con María Andueza]</span></li>
+              <span class="guest">[Con María Andueza]</span>
+            </li>
             <li><span class="num">2</span><span>24.03.2027</span></li>
           </ol>
         </div>
@@ -125,8 +126,11 @@
         <h2>CONVOCATORIA</h2>
         <p>Abriremos convocatoria para cada dupla de encuentros en cada museo, seleccionando 15
           participantes.</p>
-        <p>Se dirige especialmente a mediadoras, artistas, estudiantes y profesionales del sector cultural, la creación comunitaria o las humanidades digitales. No son necesarios conocimientos técnicos, únicamente interés por el patrimonio y la cultura digital.</p>
-        <p>Importante: la segunda sesión retoma el trabajo de la primera. Inscríbete solo si puedes asistir a las dos.</p>
+        <p>Se dirige especialmente a mediadoras, artistas, estudiantes y profesionales del sector cultural, la creación
+          comunitaria o las humanidades digitales. No son necesarios conocimientos técnicos, únicamente interés por el
+          patrimonio y la cultura digital.</p>
+        <p>Importante: la segunda sesión retoma el trabajo de la primera. Inscríbete solo si puedes asistir a las dos.
+        </p>
       </article>
 
       <article class="column" id="sobre" data-image="img/750x650_04.webp">
@@ -147,6 +151,19 @@
         <input type="text" id="nombre" name="nombre" placeholder="Nombre y apellidos" required>
         <input type="email" id="email" name="email" placeholder="Email" required>
         <input type="text" name="web" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+        <div class="legal" id="form-legal" hidden>
+          <label class="check">
+            <input type="checkbox" id="privacidad" name="acepta_privacidad" value="si" required>
+            <span>He leído y acepto la <a href="privacidad.html" target="_blank">política de privacidad</a></span>
+          </label>
+          <p>
+            Usaremos tu nombre y tu email solo para gestionar tu inscripción.
+            Para cualquier duda o para borrar tus datos, escribe a
+            <a href="mailto:desmusea@gmail.com">desmusea@gmail.com</a>.
+          </p>
+        </div>
+
         <button type="submit">INSCRIBIRME</button>
         <p class="form-msg" id="form-msg" role="status"></p>
       </form>

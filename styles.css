@@ -490,3 +490,87 @@ footer.visible {
     padding: 1.2em 0 1em;
   }
 }
+
+/* ---------- Texto legal del formulario ---------- */
+
+.subscribe-form .legal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+  text-align: center;
+  font-size: 11px;
+  padding: 0 var(--inset);
+  animation: legal-in 0.3s ease;
+}
+
+.subscribe-form .legal[hidden] {
+  display: none;
+}
+
+.subscribe-form .check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  cursor: pointer;
+}
+
+.subscribe-form .check input {
+  appearance: none;
+  -webkit-appearance: none;
+  flex-shrink: 0;
+  width: 1.2em;
+  height: 1.2em;
+  padding: 0;
+  border: var(--dash);
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+}
+
+.subscribe-form .check input:checked {
+  background: var(--accent-color);
+  border-style: solid;
+}
+
+.subscribe-form .check input:checked::after {
+  content: "✓";
+  color: var(--bg-color);
+  font-size: 0.85em;
+  line-height: 1;
+}
+
+.subscribe-form .check input:focus-visible {
+  outline: 1px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+.subscribe-form .legal a,
+.privacy a {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.privacy {
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+}
+
+.privacy h1,
+.privacy h2 {
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+@keyframes legal-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
